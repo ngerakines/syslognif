@@ -50,7 +50,7 @@ static ERL_NIF_TERM nif_write(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[
     if (enif_get_string(env, argv[1], message, sizeof(message), ERL_NIF_LATIN1) < 1) {
         return enif_make_badarg(env);
     }
-    syslog(log_level, message);
+    syslog(log_level, "%s", message);
     return enif_make_atom(env, "ok");
 }
 
