@@ -32,8 +32,10 @@ THE SOFTWARE.
 
 #define MAXBUFLEN 1024
 
+char facil[MAXBUFLEN];
+
+
 static ERL_NIF_TERM nif_open(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[]) {
-    char facil[MAXBUFLEN];
     if (enif_get_string(env, argv[0], facil, sizeof(facil), ERL_NIF_LATIN1) < 1) {
         return enif_make_badarg(env);
     }
