@@ -32,14 +32,18 @@ THE SOFTWARE.
 
 #define MAXBUFLEN 1024
 
-char facil[MAXBUFLEN];
+const char ident[MAXBUFLEN];
 
 
 static ERL_NIF_TERM nif_open(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[]) {
-    if (enif_get_string(env, argv[0], facil, sizeof(facil), ERL_NIF_LATIN1) < 1) {
+    int option;
+    int facility;
+    if ( (enif_get_string(env, argv[0], (char *)ident, sizeof(ident), ERL_NIF_LATIN1) < 1) ||
+         !enif_get_int(env, argv[1], &option) ||
+         !enif_get_int(env, argv[2], &facility)) {
         return enif_make_badarg(env);
     }
-    openlog(facil, LOG_CONS | LOG_PID, 0);
+    openlog(ident, option, facility);
     return enif_make_atom(env, "ok");
 }
 
@@ -62,7 +66,7 @@ static ERL_NIF_TERM nif_close(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[
 }
 
 static ErlNifFunc nif_funcs[] = {
-    {"open", 1, nif_open},
+    {"open", 3, nif_open},
     {"write", 2, nif_write},
     {"close", 0, nif_close}
 };
